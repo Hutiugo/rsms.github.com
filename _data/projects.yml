@@ -1,6 +1,6 @@
-- name:  Interface font family
-  url:   /interface/
-  descr: A font family for highly legible text on computer screens
+- name:  Inter UI font family
+  url:   /inter/
+  descr: A font family for text on computer screens
 
 - name:  FFysics
   url:   /fun/ffysics

@@ -14,13 +14,23 @@ fi
 
 SRCDIR=$(pwd)
 pushd res/icon >/dev/null
-ICONDIR=$(pwd)
 
 # svg
-echo "write $DSTDIR/icon.svg"
-svgo --config='{"plugins":[{"transformsWithOnePath":{}},{"removeViewBox":{}},{"removeAttrs":{"attrs":["figma.+"]}},{"removeTitle":{}},{"removeDesc":{"removeAny":true}}]}' \
-     --multipass \
-     icon.svg
+for f in *.svg; do
+  echo "svgo $f"
+  svgo --config='{"plugins":[{"transformsWithOnePath":{}},{"removeViewBox":{}},{"removeAttrs":{"attrs":["figma.+"]}},{"removeTitle":{}},{"removeDesc":{"removeAny":true}}]}' \
+       --multipass \
+       -q \
+       "$f" &
+done
+
+for f in *.png; do
+  echo "pngcrush $f"
+  TMPNAME=.$f.tmp
+  (pngcrush -q "$f" "$TMPNAME" && mv -f "$TMPNAME" "$f") &
+done
+
+wait
 
 # favicon
 echo "write $SRCDIR/favicon.ico"
